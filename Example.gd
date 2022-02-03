@@ -25,12 +25,12 @@ func _ready():
 		dropzone.connect("draggable_dropped", self, "_on_draggable_dropped")
 
 
-#_dropzone will not accept the _draggable, if it does already has one
+#_dropzone will not accept the _draggable if it already has one
 func _on_dropzone_accepts(_draggable : Draggable, _dropzone : Dropzone) -> bool:
 	return not _dropzone.get_current_draggable()
 
 
-#when a draggable snaps on a dropzone, if the dropzone is occu
+#when a draggable snaps on a dropzone that accepts it... just print the name for now
 func _on_draggable_snapped(_draggable : Draggable, _dropzone : Dropzone) -> void:
 	print(_draggable.name, ' snapped to ', _dropzone.name)
 
