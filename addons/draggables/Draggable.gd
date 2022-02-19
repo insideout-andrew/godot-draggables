@@ -6,17 +6,24 @@ signal picked_up(_draggable)
 signal dropped(_draggable)
 
 
-export var disabled := false
+export var disabled := false setget _set_disabled
 export var follow_speed := 15.0
 export var return_speed := 25.0
 
 
 var held := false setget _set_held
 var hovered := false setget _set_hovered
-
+var auto_movement_disabled := false
 
 var snapped_dropzone #: Area2D
 var dropzone #: Area2D
+
+
+func _set_disabled(new_val : bool) -> void:
+	if disabled != new_val:
+		disabled = new_val
+		if held:
+			self.held = false
 
 
 func _set_held(x : bool):
@@ -33,8 +40,7 @@ func _set_held(x : bool):
 			emit_signal("dropped", self)
 			_set_dropzone_accepts(false)
 			if snapped_dropzone:
-#				dropzone = snapped_dropzone
-				dropzone.emit_signal("draggable_dropped", self, snapped_dropzone)
+				snapped_dropzone.emit_signal("draggable_dropped", self, snapped_dropzone)
 #			$CollisionShape2D.modulate = Color.white
 	
 	
@@ -47,10 +53,10 @@ func _set_hovered(x : bool):
 #			$CollisionShape2D.modulate = Color.white
 
 #anytime a draggable is picked up, go through all dropzones and set accepts_draggable to {value}
-func _set_dropzone_accepts(value):
+func _set_dropzone_accepts(picked_up : bool) -> void:
 	var dropzones = get_tree().get_nodes_in_group("Dropzone")
 	for dropzone in dropzones:
-		if value:
+		if picked_up:
 			dropzone.on_draggable_picked_up(self)
 		else:
 			dropzone.on_draggable_dropped(self, dropzone)
@@ -77,14 +83,16 @@ func _on_input_event(_viewport : Node, event : InputEvent, _shape : int) -> void
 
 
 func _process(delta):
+	if auto_movement_disabled:
+		return
 	if held:
 		if snapped_dropzone:
-			position = lerp(position, snapped_dropzone.position, follow_speed * delta)
+			global_position = lerp(global_position, snapped_dropzone.global_position, follow_speed * delta)
 		else:
-			position = lerp(position, get_global_mouse_position(), follow_speed * delta)
+			global_position = lerp(global_position, get_global_mouse_position(), follow_speed * delta)
 	else:
 		if dropzone:
-			position = lerp(position, dropzone.position, return_speed * delta)
+			global_position = lerp(global_position, dropzone.global_position, return_speed * delta)
 
 
 func _on_mouse_entered() -> void:
@@ -116,4 +124,4 @@ func set_snapped_dropzone(_dropzone : Area2D) -> void:
 func set_dropzone(_dropzone : Area2D, _move_immediately : bool = false) -> void:
 	self.dropzone = _dropzone
 	if _move_immediately:
-		position = _dropzone.position
+		global_position = _dropzone.global_position

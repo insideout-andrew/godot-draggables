@@ -67,6 +67,7 @@ func set_accepts(node : Node, method : String) -> void:
 	_accepts_method_node = node
 	_accepts_method = method
 
+
 func get_current_draggable() -> Area2D:
 	var all_draggables = get_tree().get_nodes_in_group("Draggable")
 	var current_draggable

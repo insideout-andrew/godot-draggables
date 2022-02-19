@@ -1,11 +1,18 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Example.gd" type="Script" id=1]
 [ext_resource path="res://addons/draggables/Draggable.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/draggables/Dropzone.tscn" type="PackedScene" id=3]
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 21.4744, 34.3005 )
+
 [sub_resource type="CircleShape2D" id=1]
 radius = 27.6514
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 21.3923
+height = 41.9969
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 26.423, 23.673 )
@@ -19,7 +26,7 @@ script = ExtResource( 1 )
 position = Vector2( 141.53, 82.071 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dropzones/Dropzone"]
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Dropzone2" parent="Dropzones" instance=ExtResource( 3 )]
 position = Vector2( 246.213, 84.5834 )
@@ -30,8 +37,8 @@ shape = SubResource( 1 )
 [node name="Dropzone3" parent="Dropzones" instance=ExtResource( 3 )]
 position = Vector2( 352.57, 91.2825 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Dropzones/Dropzone3"]
-shape = SubResource( 1 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Dropzones/Dropzone3"]
+polygon = PoolVector2Array( -4.95041, -25.3463, 4.7854, -4.62112, 17.7552, -3.91859, 5.9743, 4.94415, 4.62329, 18.2923, -5.26624, 7.97045, -18.1821, 8.83511, -4.34753, 0.188538 )
 
 [node name="Dropzone4" parent="Dropzones" instance=ExtResource( 3 )]
 position = Vector2( 139.855, 191.777 )
@@ -43,7 +50,7 @@ shape = SubResource( 1 )
 position = Vector2( 247.05, 189.265 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dropzones/Dropzone5"]
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="Dropzone6" parent="Dropzones" instance=ExtResource( 3 )]
 position = Vector2( 354.245, 193.452 )
@@ -60,5 +67,5 @@ shape = SubResource( 2 )
 
 [node name="Draggable2" parent="Draggables" instance=ExtResource( 2 )]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Draggables/Draggable2"]
-shape = SubResource( 2 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Draggables/Draggable2"]
+polygon = PoolVector2Array( 0.842102, -41.0048, 47.5244, -32.1968, 36.074, -0.488068, 51.488, 19.7703, 15.8157, 40.469, 2.6037, 28.1379, -14.5719, 43.1114, -41.4362, 8.76031, -26.903, -2.69006, -40.9958, -25.1504 )
